@@ -1,10 +1,5 @@
-symbol = Hash[
-  'dash' => '-',
-  'dot' => '.'
-]
-$morse_code = Hash[
-  "#{symbol['dot']}" => Hash[
-    'a' => '.-',
+def list_dot
+  { 'a' => '.-',
     'e' => '.',
     'h' => '....',
     'i' => '..',
@@ -29,10 +24,11 @@ $morse_code = Hash[
     '4' => '....-',
     '5' => '.....',
     '?' => '..--..',
-    '.' => '.-.-.-',
-  ],
-  "#{symbol['dash']}" => Hash[
-    'b' => '-...',
+    '.' => '.-.-.-' }
+end
+
+def list_dash
+  { 'b' => '-...',
     'c' => '-.-.',
     'd' => '-..',
     'g' => '--.',
@@ -58,24 +54,27 @@ $morse_code = Hash[
     '9' => '----.',
     '0' => '-----',
     ',' => '--..--',
-    '!' => '-.-.--'
-  ],
-  ' ' => ' '
-]
+    '!' => '-.-.--' }
+end
+
+def list_all
+  symbol = { 'dash' => '-',
+             'dot' => '.' }
+  { symbol['dot'].to_s => list_dot,
+    symbol['dash'].to_s => list_dash,
+    ' ' => ' '
+  }
+end
 
 def decode_char(symbols)
-  symbol = symbols.split('')[0]
-  if $morse_code[symbol]
-    $morse_code[symbol].each { |key, value|
-      if symbols === value
-        return key.capitalize
-      end
-    }
+  symbol = symbols.chars[0]
+  list_all[symbol]&.each do |key, value|
+    return key.capitalize if symbols == value
   end
 end
 
 def decode_word(word)
-  characters = word.split(' ')
+  characters = word.split
   characters.map { |character| decode_char(character) }.join
 end
 
@@ -84,11 +83,11 @@ def decode_message(message)
   words.map { |word| decode_word(word) }.join(' ')
 end
 
-puts decode_message("-- -.--   -. .- -- .")
+puts decode_message('-- -.--   -. .- -- .')
 
 puts decode_word('.... . .-.. .-.. ---') # HELLO
 
-# decode sentence
+  # decode sentence
 puts decode_message('.... . -.--   ..- ... .... .. -. -.. .. .-.-.-') # HEY USHINDI.
 puts decode_message('..   .- --   - .-. .- -.-. . -.-- .-.-.-') # I AM TRACEY!
 puts decode_message('.-   -... --- -..-   ..-. ..- .-.. .-..   --- ..-.   .-. ..- -... .. . ... -.-.--')
