@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def list_dot
   { 'a' => '.-', 'e' => '.', 'h' => '....',
     'i' => '..', 'j' => '.---', 'f' => '..-.',

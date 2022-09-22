@@ -2,7 +2,6 @@ AllCops:
   NewCops: enable
   Exclude:
     - "Guardfile"
-    - "Gemfile"
     - "Rakefile"
     - "node_modules/**/*"
 
