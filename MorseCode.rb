@@ -9,6 +9,7 @@ $morse_code = Hash[
     'h' => '....',
     'i' => '..',
     'j' => '.---',
+    'f' => '..-.',
     'l' => '.-..',
     'p' => '.--.',
     'r' => '.-.',
@@ -16,6 +17,19 @@ $morse_code = Hash[
     'u' => '..-',
     'v' => '...-',
     'w' => '.--',
+    '"' => '.-..-.',
+    '$' => '...-..-',
+    '@' => '.--.-.',
+    '_' => '..--.-',
+    '+' => '.-.-.',
+    '&' => '.-...',
+    '1' => '.----',
+    '2' => '..---',
+    '3' => '...--',
+    '4' => '....-',
+    '5' => '.....',
+    '?' => '..--..',
+    '.' => '.-.-.-',
   ],
   "#{symbol['dash']}" => Hash[
     'b' => '-...',
@@ -31,15 +45,50 @@ $morse_code = Hash[
     'x' => '-..-',
     'y' => '-.--',
     'z' => '--..',
-  ]
+    '/' => '-..-.',
+    '(' => '-.--.',
+    ')' => '-.--.-',
+    ':' => '---...',
+    ';' => '-.-.-.',
+    '=' => '-...-',
+    '-' => '-....-',
+    '6' => '-....',
+    '7' => '--...',
+    '8' => '---..',
+    '9' => '----.',
+    '0' => '-----',
+    ',' => '--..--',
+    '!' => '-.-.--'
+  ],
+  ' ' => ' '
 ]
 
-def decode_char(char_set)
-  first_char = char_set.split('')[0]
-  $morse_code[first_char].each { |key, value|
-    if char_set === value
-      return key
-    end
-  }
+def decode_char(symbols)
+  symbol = symbols.split('')[0]
+  if $morse_code[symbol]
+    $morse_code[symbol].each { |key, value|
+      if symbols === value
+        return key.capitalize
+      end
+    }
+  end
 end
 
+def decode_word(word)
+  characters = word.split(' ')
+  characters.map { |character| decode_char(character) }.join
+end
+
+def decode_message(message)
+  words = message.split('   ')
+  words.map { |word| decode_word(word) }.join(' ')
+end
+
+puts decode_message("-- -.--   -. .- -- .")
+
+puts decode_word('.... . .-.. .-.. ---') # HELLO
+
+# decode sentence
+puts decode_message('.... . -.--   ..- ... .... .. -. -.. .. .-.-.-') # HEY USHINDI.
+puts decode_message('..   .- --   - .-. .- -.-. . -.-- .-.-.-') # I AM TRACEY!
+puts decode_message('.-   -... --- -..-   ..-. ..- .-.. .-..   --- ..-.   .-. ..- -... .. . ... -.-.--')
